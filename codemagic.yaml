@@ -1,0 +1,18 @@
+workflows:
+  sudoku-apk:
+    name: Sudoku APK
+    instance_type: linux_x2
+    max_build_duration: 30
+    environment:
+      java: 17
+    scripts:
+      - name: Unzip project
+        script: unzip -q Sudoku-Android-Project.zip
+      - name: Get Gradle
+        script: |
+          curl -sL https://services.gradle.org/distributions/gradle-8.9-bin.zip -o /tmp/gradle.zip
+          unzip -q /tmp/gradle.zip -d /tmp
+      - name: Build APK
+        script: cd SudokuApp && /tmp/gradle-8.9/bin/gradle assembleDebug --no-daemon
+    artifacts:
+      - SudokuApp/app/build/outputs/apk/debug/app-debug.apk
